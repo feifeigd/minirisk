@@ -29,12 +29,14 @@ All these features can be implemented as modifications or extensions of the code
 
 \section{License}
 The license for the source code is in the main directory. Please read the license file.
-\section{Source code organization}
+\section{Source code organization and build instructions}
 All source code files are in the subdirectory \textit{src}. Source files with names matching the patterns \textit{Demo*.cpp} or \textit{Test*.cpp} contain the \textit{main} routine for separate programs. The other cpp files are library components used by the various programs.
 
-The \textit{src} subdirectory also contains a \textit{Makefile} for \textit{gcc} compilation. If you use Visual Studio, you need to: create a new solution; in the solution add one console project for each cpp file with name \textit{Demo*.cpp} or \textit{Test*.cpp}; in each project also add all other cpp files (except the ones with name \textit{Demo*.cpp} or \textit{Test*.cpp}), so that in each project you have one and only one cpp file containing the function \textit{main}.
+The target platform is x86\_64 (64 bits). The C++ language standard used is: C++17.
 
-A number of txt files are given. \textit{portfolio\_0.txt} and \textit{risk\_factors\_0.txt} work with the program in its current state. \textit{portfolio\_$i$.txt} and \textit{risk\_factors\_$i$.txt} work after completion of the first $i$ tasks. If a file with appropriate numeration is missing, you can use the last one available (e.g. in task 11, you can use \textit{risk\_factors\_5.txt})
+The \textit{src} subdirectory also contains a \textit{Makefile} for \textit{gcc} compilation. If you use Visual Studio, you need to: create a new solution; in the solution add one console project for each cpp file with name \textit{Demo*.cpp} or \textit{Test*.cpp}; in each project also add all other cpp files (except the ones with name \textit{Demo*.cpp} or \textit{Test*.cpp}), so that in each project you have one and only one cpp file containing the function \textit{main}. Select platform "x64" (the default is "x86", i.e. 32 bits). You can work in "Debug" mode, which allows you to execute code step by step and use breakpoints, but when you are finished with development and want to test the performance of your final program you should use "Release" mode. The language standard can be selected from the project configuration (right click on the project in the Solution Explorer pane, then  select C++/Lanugage/C++LanguageStandards). Note that this must be repeated for all modes (debug and release).
+
+A number of txt files are given. \textit{portfolio\_0.txt} and \textit{risk\_factors\_0.txt} work with the program in its current state. \textit{portfolio\_$i$.txt} and \textit{risk\_factors\_$i$.txt} work after completion of the first $i$ tasks. If a file with appropriate enumeration is missing, you can use the last one available (e.g. in task 11, you can use \textit{risk\_factors\_5.txt})
 
 To run the program type from the command line:\\
 \textit{DemoRisk -p portfolio.txt -f risk\_factors.txt}
@@ -45,9 +47,15 @@ To run the program directly from inside Visual Studio, you can specify the worki
 You have to complete sequentially all tasks mentioned in section \ref{sec:task}. After completing each task you should test correctness of your work by succesfully running the command \\
 \textit{DemoRisk portfolio\_i.txt risk\_factors\_i.txt}\\
 and comparing the output of your program with the output given in \textit{output\_i.txt}.
-To compare files you can use the free program \textit{WinMerge}, or \textit{sdiff} on Linux. Your goal is to generate an identical output. To compare if files are identical, on Windows you can use WinMerge.
+To compare files you can use the free Windows program \textit{WinMerge}, or \textit{sdiff} on Linux. Your goal is to generate an output file \textbf{identical} to the one provided.
 
-After completing all tasks you need to zip and submit all files with extension *.h and *.cpp. Do not submit any other file (e.g. txt files, project files, object files, executable files).
+After completing all tasks you need to zip and submit all files with extension *.h and *.cpp. Do not submit any other file (e.g. txt files, project files, object files, executable files). Files should be zipped without directory path. I.e. your zip file should contain file1.cpp, file2.cpp, ..., not dirname\textbackslash file1.cpp, dirname\textbackslash file2.cpp, ....
+
+You need to include in the zip file also a file GROUP.TXT containing team members. The file must contains the student IDs separate by a newline, i.e.
+\\ \indent studentID1
+\\ \indent  studentID2
+\\ \indent  ...
+
 
 \section{Marking criteria}
 Marking is going to be based on the following criterias.
@@ -64,6 +72,7 @@ Any major performance difference ($>20\%$ slower) implies a sub-optimal design (
 \item Style (40\%):
 \begin{itemize}
 \item correct use of indentation (configure your editor to convert tab to spaces and to use tabs of 4 characters)
+\item if called with no arguments or with incorrect arguments, the program must produce an explanation of the correct command line syntax required to invoke the program
 \item proper choices of variable and function names
 \item appropriate use of source code comments
 \item avoid code duplication (do not copy and paste, introduce new functions as appropriate)
@@ -236,6 +245,5 @@ Note that there can be various situations with respect to the pricing date $T_0$
 	\item $T_0 > T_2$: trade is expired, an error should be generated
 \end{itemize}
 
-Pass this object as an argument when you construct pricer objects, so that pricers can verify what fixings are available, and use appropriately in your pricers.
 \end{document}
 
