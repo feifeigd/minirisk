@@ -36,7 +36,7 @@ HEADERS=$(wildcard *.h)
 ALLDEPS=$(HEADERS) Makefile
 
 
-CFLAGS=-std=c++14 -Wall -Werror -Wconversion -Iinclude
+CFLAGS=-std=c++17 -Wall -Werror -Wconversion -Iinclude
 LFLAGS=
 
 ifdef DEBUG
