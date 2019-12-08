@@ -34,7 +34,8 @@ All source code files are in the subdirectory \textit{src}. Source files with na
 
 The target platform is x86\_64 (64 bits). The C++ language standard used is: C++17.
 
-The \textit{src} subdirectory also contains a \textit{Makefile} for \textit{gcc} compilation. If you use Visual Studio, you need to: create a new solution; in the solution add one console project for each cpp file with name \textit{Demo*.cpp} or \textit{Test*.cpp}; in each project also add all other cpp files (except the ones with name \textit{Demo*.cpp} or \textit{Test*.cpp}), so that in each project you have one and only one cpp file containing the function \textit{main}. Select platform "x64" (the default is "x86", i.e. 32 bits). You can work in "Debug" mode, which allows you to execute code step by step and use breakpoints, but when you are finished with development and want to test the performance of your final program you should use "Release" mode. The language standard can be selected from the project configuration (right click on the project in the Solution Explorer pane, then  select C++/Lanugage/C++LanguageStandards). Note that this must be repeated for all modes (debug and release).
+The \textit{src} subdirectory also contains a \textit{Makefile} for \textit{gcc} compilation. If you use Visual Studio 2019, you can use the solution provided in the vs directory or create a new solution.
+You need to: create a new solution; in the solution add one console project for each cpp file with name \textit{Demo*.cpp} or \textit{Test*.cpp}; in each project also add all other cpp files (except the ones with name \textit{Demo*.cpp} or \textit{Test*.cpp}), so that in each project you have one and only one cpp file containing the function \textit{main}. Select platform "x64" (the default is "x86", i.e. 32 bits). You can work in "Debug" mode, which allows you to execute code step by step and use breakpoints, but when you are finished with development and want to test the performance of your final program you should use "Release" mode. The language standard can be selected from the project configuration (right click on the project in the Solution Explorer pane, then  select C++/Lanugage/C++LanguageStandards). Note that this must be repeated for all modes (debug and release).
 
 A number of txt files are given. \textit{portfolio\_0.txt} and \textit{risk\_factors\_0.txt} work with the program in its current state. \textit{portfolio\_$i$.txt} and \textit{risk\_factors\_$i$.txt} work after completion of the first $i$ tasks. If a file with appropriate enumeration is missing, you can use the last one available (e.g. in task 11, you can use \textit{risk\_factors\_5.txt})
 
@@ -72,6 +73,7 @@ Any major performance difference ($>20\%$ slower) implies a sub-optimal design (
 \item Style (40\%):
 \begin{itemize}
 \item correct use of indentation (configure your editor to convert tab to spaces and to use tabs of 4 characters)
+\item Your compilation should produce no warnings.
 \item if called with no arguments or with incorrect arguments, the program must produce an explanation of the correct command line syntax required to invoke the program
 \item proper choices of variable and function names
 \item appropriate use of source code comments
