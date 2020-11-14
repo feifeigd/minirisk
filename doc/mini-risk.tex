@@ -251,6 +251,18 @@ Note that there can be various situations with respect to the pricing date $T_0$
 	\item $T_0 > T_2$: trade is expired, an error should be generated
 \end{itemize}
 
+\section{Q\&A}
+\subsection{How do I save the output of my program to a file?}
+You can redirect the output of your program to a file adding at the end of the command line:  $>$ \textit{filename.txt}.
+\subsection{How do I measure the execution time of my program?}
+\begin{enumerate}
+    \item Compile your program for x64 platform in Release mode.
+    \item Redirect the console to a file, as explained above (this is because the console is very slow, and your time measurement would not be reflective of the real computation time)
+    \item Run the command \textit{echo \%time\%} before and after calling your command. You might consider creating a batch file (.bat) and run it from the windows shell (\textit{cmd}).
+\end{enumerate}
+\subsection{How can I know if the performace of my program is reasonable?}
+I will post my implementation as an executable for Win64. You can compare your implementation with mine. I will not post an equivalent binary file for MacOS.
+
 \end{document}
 
 
