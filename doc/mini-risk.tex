@@ -1,20 +1,11 @@
-\documentclass[10pt]{article}
-%\usepackage{listings}
-%\usepackage{fontspec}
-%\setmainfont{Linux Libertine O}
-\usepackage{amsfonts}
-%\usepackage{multirow}
-\usepackage{amsmath, amssymb}
-%\usepackage[T1]{fontenc}
-%\usepackage[utf8]{inputenc}
 %\usepackage[english]{babel}
-%\usepackage[margin=0.8in]{geometry}
+\usepackage[margin=0.6in]{geometry}
 
 \title{Foundations of a Risk Management System \\
 \large FE5226 Class Project
 }
 \author{Fabio Cannizzo}
-\date{2017-9-1\\ version 1.1}
+\date{version: 2020-10-4}
 
 \begin{document}
 \maketitle
@@ -34,8 +25,7 @@ All source code files are in the subdirectory \textit{src}. Source files with na
 
 The target platform is x86\_64 (64 bits). The C++ language standard used is: C++17.
 
-The \textit{src} subdirectory also contains a \textit{Makefile} for \textit{gcc} compilation. If you use Visual Studio 2019, you can use the solution provided in the vs directory or create a new solution.
-You need to: create a new solution; in the solution add one console project for each cpp file with name \textit{Demo*.cpp} or \textit{Test*.cpp}; in each project also add all other cpp files (except the ones with name \textit{Demo*.cpp} or \textit{Test*.cpp}), so that in each project you have one and only one cpp file containing the function \textit{main}. Select platform "x64" (the default is "x86", i.e. 32 bits). You can work in "Debug" mode, which allows you to execute code step by step and use breakpoints, but when you are finished with development and want to test the performance of your final program you should use "Release" mode. The language standard can be selected from the project configuration (right click on the project in the Solution Explorer pane, then  select C++/Lanugage/C++LanguageStandards). Note that this must be repeated for all modes (debug and release).
+The \textit{src} subdirectory also contains a \textit{Makefile} for \textit{gcc} compilation. If you use Visual Studio, you need to: create a new solution; in the solution add one console project for each cpp file with name \textit{Demo*.cpp} or \textit{Test*.cpp}; in each project also add all other cpp files (except the ones with name \textit{Demo*.cpp} or \textit{Test*.cpp}), so that in each project you have one and only one cpp file containing the function \textit{main}. Select platform "x64" (the default is "x86", i.e. 32 bits). You can work in "Debug" mode, which allows you to execute code step by step and use breakpoints, but when you are finished with development and want to test the performance of your final program you should use "Release" mode. The language standard can be selected from the project configuration (right click on the project in the Solution Explorer pane, then  select C++/Lanugage/C++LanguageStandards). Note that this must be repeated for all modes (debug and release).
 
 A number of txt files are given. \textit{portfolio\_0.txt} and \textit{risk\_factors\_0.txt} work with the program in its current state. \textit{portfolio\_$i$.txt} and \textit{risk\_factors\_$i$.txt} work after completion of the first $i$ tasks. If a file with appropriate enumeration is missing, you can use the last one available (e.g. in task 11, you can use \textit{risk\_factors\_5.txt})
 
@@ -50,41 +40,55 @@ You have to complete sequentially all tasks mentioned in section \ref{sec:task}.
 and comparing the output of your program with the output given in \textit{output\_i.txt}.
 To compare files you can use the free Windows program \textit{WinMerge}, or \textit{sdiff} on Linux. Your goal is to generate an output file \textbf{identical} to the one provided.
 
-After completing all tasks you need to zip and submit all files with extension *.h and *.cpp. Do not submit any other file (e.g. txt files, project files, object files, executable files). Files should be zipped without directory path. I.e. your zip file should contain file1.cpp, file2.cpp, ..., not dirname\textbackslash file1.cpp, dirname\textbackslash file2.cpp, ....
-
-You need to include in the zip file also a file GROUP.TXT containing team members. The file must contains the student IDs separate by a newline, i.e.
-\\ \indent studentID1
-\\ \indent  studentID2
-\\ \indent  ...
-
+\newpage
 
 \section{Marking criteria}
-Marking is going to be based on the following criterias.
-\begin{itemize}
-\item Correctness (60\%):
-\begin{itemize}
-\item I will run your \textit{DemoRisk} with my trade portfolio and market data files and compare your output with mine. This may include expired trades (i.e. trades where the last payment date is before the pricing date, which should generate an error), missing market data (e.g. a missing FX spot), missing fixings.
-\item I will run my \textit{TestDate} program against your \textit{Date} class.
-\item I will run your \textit{DemoRisk} with my trade portfolio and market data files and compare your output with mine, using a base currency different from USD.
-\item I will run your \textit{DemoRisk} with my trade portfolio and market data files and compare your output with mine.
-\item I will check the total computation time of your executable against mine for a large portfolio with multiple currencies.
-Any major performance difference ($>20\%$ slower) implies a sub-optimal design (inappropriate choice of data structures and/or algorithms).
-\end{itemize}
-\item Style (40\%):
+Marking is going to be based on the following criteria.
+\subsection{Correctly follow submission instructions (2 marks)}
+By simply following correctly submission procedures described in section \ref{sec:submission}, you get full marks. While this seems trivial, every year some students fail to do this, so please be careful. 
+\subsection{Coding style (3 marks)}
+Follow good practice
 \begin{itemize}
 \item correct use of indentation (configure your editor to convert tab to spaces and to use tabs of 4 characters)
-\item Your compilation should produce no warnings.
 \item if called with no arguments or with incorrect arguments, the program must produce an explanation of the correct command line syntax required to invoke the program
 \item proper choices of variable and function names
 \item appropriate use of source code comments
 \item avoid code duplication (do not copy and paste, introduce new functions as appropriate)
 \item code robustness (e.g. assert function arguments are valid)
 \item code conciseness (do not do in 10 lines what you could do in one line)
-\item do not reinvent the weel (use library functions when available)
-\item minimal diff: only modify the lines of code strictly necessary, do not insert unnecessary whitespaces (you can use \textit{WinMerge} to view the difference between your files and the original ones, or use \textit{git}, which is excellent for checking differences). I will use git to check differences.
-\end{itemize}
+\item do not reinvent the wheel (use library functions when available)
+\item minimal changes to original files: only add or modify the lines of code strictly necessary, do not insert unnecessary whitespaces (you can use \textit{WinMerge} to view the difference between your files and the original ones, or use \textit{git}, which is excellent for checking differences). I will use WinMerge to check differences.
 \end{itemize}
 
+\subsection{Date class correctness (2 marks)}
+I will look at you date class implementation and the test, focusing on correctness. I will run your date class against my test.
+
+\subsection{Basic correctness (5 marks)}
+\label{sec:correct}
+If your code compiles I will run your \textit{DemoRisk} with the given trade portfolio and market data and compare your output with mine using WinMerge. If there is a no difference, you get full marks. If your code does not compile, you will get zero marks.
+
+\subsection{Performance (4 marks)}
+I create a very large test portfolio (millions of trades). As simple way to do this is to simply copy the given test set portfolio many times in a bigger file. If your DemoRisk runs in a time comparable or better than my own implementation, you get full marks. If section \ref{sec:correct} fails, here you get zero marks. Common mistakes that can make your program slow are: poor choice of data structures and redundant calculations (in particular, for market objects, do as much calculations as possible when you construct the objects, and reuse this information when pricers query the market data objects).
+
+\subsection{Advanced correctness (4 marks)}
+I create an extended set of test test files, with more currencies and more special cases than what covered by the sample test files. This may include expired trades (i.e. trades where the last payment date is before the pricing date, which should generate an error), missing market data (e.g. a missing FX spot), missing fixings and other corner cases. If your DemoRisk runs correctly reproducing the output file provided you get full marks. I will compare your output with mine using WinMerge. If section \ref{sec:correct} fails, here you get zero marks.
+
+\newpage
+\section{Submission instructions}
+\label{sec:submission}
+\begin{itemize}
+    \item After completing all tasks you need to zip and submit all files with extension *.h and *.cpp.
+    \item Do not submit any other file (e.g. txt files, visual studio project files, object files, executable files, output files).
+    \item Files should be zipped without directory path.  I.e. your zip file should contain file1.cpp, file2.cpp, ..., not dirname\textbackslash file1.cpp, dirname\textbackslash file2.cpp, ....
+    \item You need to include in the zip file also a file with name GROUP.TXT containing team members. The file must contains the student IDs separated by a newline, i.e.
+    \\ \indent studentID1
+    \\ \indent  studentID2
+    \\ \indent  ...
+    \item Submit only a zip file, other formats are not allowed (e.g. arj, 7z)
+    \item Submit only only once.
+    \item Only one member of the team must submit, not all members.
+\end{itemize}
+  
 \section{Tasks}
 \label{sec:task}
 
@@ -248,4 +252,5 @@ Note that there can be various situations with respect to the pricing date $T_0$
 \end{itemize}
 
 \end{document}
+
 
