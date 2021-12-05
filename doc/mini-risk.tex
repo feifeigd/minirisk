@@ -1,11 +1,21 @@
+\documentclass[10pt]{article}
+%\usepackage{listings}
+%\usepackage{fontspec}
+%\setmainfont{Linux Libertine O}
+\usepackage{amsfonts}
+%\usepackage{multirow}
+\usepackage{amsmath, amssymb}
+%\usepackage[T1]{fontenc}
+%\usepackage[utf8]{inputenc}
 %\usepackage[english]{babel}
 \usepackage[margin=0.6in]{geometry}
 
 \title{Foundations of a Risk Management System \\
-\large FE5226 Class Project
+\large FE5226 Group Project
 }
 \author{Fabio Cannizzo}
-\date{version: 2020-10-4}
+\date{version: 2021-11-06}
+
 
 \begin{document}
 \maketitle
@@ -23,9 +33,20 @@ The license for the source code is in the main directory. Please read the licens
 \section{Source code organization and build instructions}
 All source code files are in the subdirectory \textit{src}. Source files with names matching the patterns \textit{Demo*.cpp} or \textit{Test*.cpp} contain the \textit{main} routine for separate programs. The other cpp files are library components used by the various programs.
 
-The target platform is x86\_64 (64 bits). The C++ language standard used is: C++17.
+The target platform is x86\_64 (64 bits). The C++ language standard used is: C++17. In Visual Studio you must:
+\begin{itemize}
+    \item Select platform "x64" (the default is "x86", i.e. 32 bits).
+    \item Go to the property page for the project (right click on the project from solution explorer), select "all platform" and "all configurations", then navigate the configuration tree to C++/AllOptions and set:
+    \begin{itemize}
+        \item C++ language standard: C++20
+        \item Disable language extensions: yes
+        \item Treat warnings as errors: yes
+        \item Warning level: W3
+    \end{itemize}
+\end{itemize}
 
-The \textit{src} subdirectory also contains a \textit{Makefile} for \textit{gcc} compilation. If you use Visual Studio, you need to: create a new solution; in the solution add one console project for each cpp file with name \textit{Demo*.cpp} or \textit{Test*.cpp}; in each project also add all other cpp files (except the ones with name \textit{Demo*.cpp} or \textit{Test*.cpp}), so that in each project you have one and only one cpp file containing the function \textit{main}. Select platform "x64" (the default is "x86", i.e. 32 bits). You can work in "Debug" mode, which allows you to execute code step by step and use breakpoints, but when you are finished with development and want to test the performance of your final program you should use "Release" mode. The language standard can be selected from the project configuration (right click on the project in the Solution Explorer pane, then  select C++/Lanugage/C++LanguageStandards). Note that this must be repeated for all modes (debug and release).
+
+The \textit{src} subdirectory also contains a \textit{Makefile} for \textit{gcc} compilation. If you use Visual Studio, you need to: create a new solution; in the solution add one console project for each cpp file with name \textit{Demo*.cpp} or \textit{Test*.cpp}; in each project also add all other cpp files (except the ones with name \textit{Demo*.cpp} or \textit{Test*.cpp}), so that in each project you have one and only one cpp file containing the function \textit{main}. You can work in "Debug" mode, which allows you to execute code step by step and use breakpoints, but when you are finished with development and want to test the performance of your final program you should use "Release" mode. The language standard can be selected from the project configuration (right click on the project in the Solution Explorer pane, then  select C++/Lanugage/C++LanguageStandards). Note that this must be repeated for all modes (debug and release).
 
 A number of txt files are given. \textit{portfolio\_0.txt} and \textit{risk\_factors\_0.txt} work with the program in its current state. \textit{portfolio\_$i$.txt} and \textit{risk\_factors\_$i$.txt} work after completion of the first $i$ tasks. If a file with appropriate enumeration is missing, you can use the last one available (e.g. in task 11, you can use \textit{risk\_factors\_5.txt})
 
@@ -40,12 +61,10 @@ You have to complete sequentially all tasks mentioned in section \ref{sec:task}.
 and comparing the output of your program with the output given in \textit{output\_i.txt}.
 To compare files you can use the free Windows program \textit{WinMerge}, or \textit{sdiff} on Linux. Your goal is to generate an output file \textbf{identical} to the one provided.
 
-\newpage
-
 \section{Marking criteria}
 Marking is going to be based on the following criteria.
-\subsection{Correctly follow submission instructions (2 marks)}
-By simply following correctly submission procedures described in section \ref{sec:submission}, you get full marks. While this seems trivial, every year some students fail to do this, so please be careful. 
+\subsection{Correctly follow submission instructions (-2 marks)}
+By simply following correctly submission procedures described in section \ref{sec:submission}, you get full marks. Otherwise, up to 2 marks are subtracted from your total mark. While this seems trivial, every year some student group fails to do this, so please be careful.
 \subsection{Coding style (3 marks)}
 Follow good practice
 \begin{itemize}
@@ -65,7 +84,7 @@ I will look at you date class implementation and the test, focusing on correctne
 
 \subsection{Basic correctness (5 marks)}
 \label{sec:correct}
-If your code compiles I will run your \textit{DemoRisk} with the given trade portfolio and market data and compare your output with mine using WinMerge. If there is a no difference, you get full marks. If your code does not compile, you will get zero marks.
+If your code compiles I will run your \textit{DemoRisk} with the given trade portfolio and market data and compare your output with mine using WinMerge. If there is a no difference, you get full marks. Note that if your code does not compile, you will get zero marks. The command line help message should also be correct (include all accepted command line arguments).
 
 \subsection{Performance (4 marks)}
 I create a very large test portfolio (millions of trades). As simple way to do this is to simply copy the given test set portfolio many times in a bigger file. If your DemoRisk runs in a time comparable or better than my own implementation, you get full marks. If section \ref{sec:correct} fails, here you get zero marks. Common mistakes that can make your program slow are: poor choice of data structures and redundant calculations (in particular, for market objects, do as much calculations as possible when you construct the objects, and reuse this information when pricers query the market data objects).
@@ -73,7 +92,18 @@ I create a very large test portfolio (millions of trades). As simple way to do t
 \subsection{Advanced correctness (4 marks)}
 I create an extended set of test test files, with more currencies and more special cases than what covered by the sample test files. This may include expired trades (i.e. trades where the last payment date is before the pricing date, which should generate an error), missing market data (e.g. a missing FX spot), missing fixings and other corner cases. If your DemoRisk runs correctly reproducing the output file provided you get full marks. I will compare your output with mine using WinMerge. If section \ref{sec:correct} fails, here you get zero marks.
 
-\newpage
+\subsection{GCC build (3 marks)}
+Before submitting, verify that your program compiles and run also with the g++ compiler. To do that on Windows 64 bits you can:
+\begin{itemize}
+    \item download setup-x86\_64.exe from https://www.cygwin.com/install.html
+    \item Run the installer. When you install, select at least the packages "gcc-g++" and "make".
+    \item launch cygwin and type the command \textit{cygpath -w \$(pwd)}.
+    \item Copy your cpp and h files and the Makefile I provided to the directory revealed by the previous command
+    \item Type "make"
+    \item If all is well, you should see all your files compiling without errors and an executable file created.
+    \item Test the executable file from the command line.
+\end{itemize}
+
 \section{Submission instructions}
 \label{sec:submission}
 \begin{itemize}
@@ -175,7 +205,7 @@ Modify the \textit{PricerPayment} class to use the new class \textit{CurveFXSpot
 
 \subsection{Add pricer configuration}
 Modify \textit{DemoRisk} to read another optional argument form the command line, the base currency (argument name \textit{-b CCY}). If not explicitly passed, this argument takes the value USD. Pass this to the \textit{run} function.
-Modify the function \textit{ITrade::Pricer} adding an argument \textit{configuration} of type \textit{string}.
+Modify the function \textit{ITrade::Pricer} adding an argument \textit{configuration} of type \textit{string}. Remember to update the command line help string.
 
 In a real risk management system the configuration argument could be very complex and allow for instance to select a pricing model (e.g. Black Scholes or Heston) or a numerical framework (e.g. PDE or Monte Carlo). In this project the configuration string is simply the base currency in which all risk is to be computed. At the moment, by default everything is computed in USD. After your changes, \textit{pricer("EUR")} should return a pricer that computes the price in EUR.\\
 
@@ -203,7 +233,7 @@ $\quad pair<double, bool>\; lookup(const\; string\&\; name,\; const\; Date\&\; t
 
 Populate the fixing data server with the data provided in the file \textit{fixings.txt}.\\
 
-Add an extra command line argument (\textit{-x}) to \textit{DemoRisk.cpp} and use it to communicate to the program the name of the data file containing the fixings.\\
+Add an extra command line argument (\textit{-x}) to \textit{DemoRisk.cpp} and use it to communicate to the program the name of the data file containing the fixings. Remember to update the command line help string.\\
 
 Create a \textit{FixingDataServer} object in \textit{DemoRisk.cpp} and pass it as an extra argument to the \textit{IPricer::price} function. Only the pricers of trades requiring fixings will do something with it, other pricers will ignore it (note that \textit{TradePayment} does not have any fixing, hence it will not use it).
 In particular: fixings occurring in the past should be obtained from this argument and if not available an exception should be thrown; fixings occurring exactly on the pricing date should be taken from this argument if available, resolved through the Market otherwise; fixings occurring in the future should be resolved through the Market (e.g. forward prices).
@@ -264,5 +294,4 @@ You can redirect the output of your program to a file adding at the end of the c
 I will post my implementation as an executable for Win64. You can compare your implementation with mine. I will not post an equivalent binary file for MacOS.
 
 \end{document}
-
 
