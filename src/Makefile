@@ -1,14 +1,25 @@
-#
-# Possible options
-# DEBUG=1                (default is DEBUG=0)
+# Possible arguments
+# DEBUG=1               [ 0 | 1 ],         default 0
+# COMPILER              [ g++ | clang++ ], default: g++ on Linux
 #
 
-# compiler
-CC=g++
+DEBUG ?= 0
 
 # platform
 PLATFORM := $(shell uname -s)
-$(info platform=$(PLATFORM))
+$(info PLATFORM: $(PLATFORM))
+
+# compiler
+COMPILER ?= g++
+CC = $(COMPILER)
+$(info COMPILER: $(CC))
+
+# directories
+BINDIR:=bin
+ifeq ($(DEBUG),1)
+  BINDIR=$(BINDIR)-dbg
+endif
+$(info BINDIR: $(BINDIR))
 
 # file extensions
 ifeq ($(PLATFORM), Linux)
@@ -23,23 +34,43 @@ else
   DLL=.dll
   LIB=.lib
 endif
-
-MAINS := $(wildcard Demo*.cpp) $(wildcard Test*.cpp)
-#$(info sources=$(MAINS))
-TARGETS := $(patsubst %.cpp,%$(EXE),$(MAINS))
-#$(info targets=$(TARGETS))
-
-OBJS := $(patsubst %.cpp,%$(OBJ),$(filter-out $(MAINS), $(wildcard *.cpp)))
-#$(info objs=$(OBJS))
-
-HEADERS=$(wildcard *.h)
-ALLDEPS=$(HEADERS) Makefile
+$(info EXTENSIONS:  $(OBJ) $(EXE) $(DLL) $(LIB))
 
 
-CFLAGS=-std=c++20 -Wall -Werror -Wconversion -Iinclude
+CPPFILES := $(patsubst ./%,%,$(shell find . -name "*.cpp"))
+$(info CPP:     $(CPPFILES))
+
+DEPFILES := $(patsubst %.cpp,$(BINDIR)/%.d,$(CPPFILES))
+$(info DEPFILES:     $(DEPFILES))
+
+
+OBJFILES := $(patsubst %.cpp,$(BINDIR)/%$(OBJ),$(CPPFILES))
+$(info OBJFILES:     $(OBJFILES))
+
+
+HEADER := $(patsubst ./%,%,$(shell find . -name "*.h"))
+$(info HEADER:     $(HEADER))
+
+
+MAINS := $(shell grep -l "int main" *.cpp)
+$(info MAINS:   $(MAINS))
+
+NONMAINS := $(filter-out $(MAINS),$(CPPFILES))
+$(info NONMAINS:   $(NONMAINS))
+
+NONMAINSOBJ := $(patsubst %.cpp,$(BINDIR)/%$(OBJ),$(NONMAINS))
+$(info NONMAINOBJS: $(NONMAINSOBJ))
+
+TARGETS := $(patsubst %.cpp,$(BINDIR)/%$(EXE),$(MAINS))
+$(info TARGETS: $(TARGETS))
+
+DEPFLAGS=-MT $@ -MMD -MP -MF $(BINDIR)/$*.d
+CFLAGS:=-c -std=c++20 -march=native -Wall -Werror
+
 LFLAGS=
+LIBS=
 
-ifdef DEBUG
+ifeq ($(DEBUG),1)
    CFLAGS += -g -DDEBUG
 else
    CFLAGS += -O3
@@ -48,22 +79,27 @@ endif
 
 all : $(TARGETS)
 
-%$(OBJ) : %.cpp $(ALLDEPS)
-	$(CC) -c $(CFLAGS) $< -o $@
-
-.SECONDARY: $(patsubst %.cpp,%$(OBJ),$(wildcard *.cpp))
-
-%.i : %.cpp $(ALLDEPS)
-	$(CC) -E -c $(CFLAGS) $< -o $@
-
-%.asm : %.cpp $(ALLDEPS)
-	$(CC) -c -g -Wa,-adhln -masm=intel $(CFLAGS) $< > $@
+.SECONDARY: $(OBJFILES) $(DEPFILES)
 
 
-%$(EXE) : %$(OBJ) $(OBJS)
-	$(CC) $(LFLAGS) $(OBJS) $< -o $@
+$(BINDIR)/%$(OBJ) : %.cpp
+$(BINDIR)/%$(OBJ) : %.cpp Makefile $(BINDIR)/%.d | $(BINDIR)
+	$(CC) $(CFLAGS) $(DEPFLAGS) $< -o $@
+
+$(BINDIR)/%$(EXE) : $(BINDIR)/%$(OBJ) $(NONMAINSOBJ)
+	$(CC) $(LFLAGS) $^ -o $@
+
+
+$(DEPFILES):
+
+include $(wildcard $(DEPFILES))
 
 # clean
 .PHONY: clean
 clean:
-	rm -f *$(OBJ)  *.i *.ii *.asm *.stackdump *$(EXE)
+	rm -rf $(BINDIR)
+
+
+# use -p for multithreading
+$(BINDIR):
+	mkdir -p $@
