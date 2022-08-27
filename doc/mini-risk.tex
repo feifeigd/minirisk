@@ -10,20 +10,20 @@
 %\usepackage[english]{babel}
 \usepackage[margin=0.6in]{geometry}
 
-\title{Foundations of a Risk Management System \\
-\large FE5226 Group Project
+\title{Foundations of a Risk Management System in C++ \\
+\large FE5226 Project
 }
 \author{Fabio Cannizzo}
-\date{version: 2021-11-06}
-
+\date{version: 2022-08-27}
+ 
 
 \begin{document}
 \maketitle
 
 \abstract{
-	This source code constitutes the foundation of a risk management system. It can load trades from a database, compute the price of trades and their sensitivities with respect to risk factors and construct market objects on demand.
+This source code demonstrates the foundation of a risk management system. It can load trades from a database, compute the price of trades, discover dynamically market dependencies and construct necessary market objects, retrieve trade life-cycling information, compute price sensitivities with respect to risk factors, analyse the impact of hypothetical market scenarios.
 
-A real risk management system entails of many more features, e.g. sophisticate market objects and pricing models; efficient algorithms to avoid unnecessary recomputations when calculating Greeks; support for a large number of trade types; extensive set of tools to orchestrate recomputations and post-process their results (e.g. P\&L explain, VaR, PFE, XVA); tools to manage life-cycle of trades; connections to external databases and systems of various nature; client-server pricing APIs; connections to cash flow management systems and payment systems; support for parallel computations (thread safety).
+A real risk management system entails of many more features, e.g. sophisticate market objects and pricing models; efficient algorithms to avoid unnecessary re-computations when calculating Greeks; support for a large number of trade types; extensive set of tools to orchestrate re-computations and post-process their results (e.g. P\&L explain, VaR, PFE, XVA); tools to manage life-cycle of trades; connections to external databases and systems of various nature; client-server pricing APIs; connections to cash flow management systems and payment systems; support for parallel computations (thread safety).
 
 All these features can be implemented as modifications or extensions of the code provided. You are supposed to carry out various improvements and extensions as specified below.
 }
@@ -64,7 +64,7 @@ To compare files you can use the free Windows program \textit{WinMerge}, or \tex
 \section{Marking criteria}
 Marking is going to be based on the following criteria.
 \subsection{Correctly follow submission instructions (-2 marks)}
-By simply following correctly submission procedures described in section \ref{sec:submission}, you get full marks. Otherwise, up to 2 marks are subtracted from your total mark. While this seems trivial, every year some student group fails to do this, so please be careful.
+By simply following correctly submission procedures described in section \ref{sec:submission}, you get full marks. Otherwise, up to 2 marks are subtracted from your total mark. While this seems trivial, every year some student group fails to do this, so please be careful. 
 \subsection{Coding style (3 marks)}
 Follow good practice
 \begin{itemize}
@@ -76,10 +76,10 @@ Follow good practice
 \item code robustness (e.g. assert function arguments are valid)
 \item code conciseness (do not do in 10 lines what you could do in one line)
 \item do not reinvent the wheel (use library functions when available)
-\item minimal changes to original files: only add or modify the lines of code strictly necessary, do not insert unnecessary whitespaces (you can use \textit{WinMerge} to view the difference between your files and the original ones, or use \textit{git}, which is excellent for checking differences). I will use WinMerge to check differences.
+\item minimal changes to original files: only add or modify the lines of code strictly necessary, do not insert unnecessary white-spaces (you can use \textit{WinMerge} to view the difference between your files and the original ones, or use \textit{git}, which is excellent for checking differences). I will use WinMerge to check differences.
 \end{itemize}
 
-\subsection{Date class correctness (2 marks)}
+\subsection{Date class correctness (1 mark)}
 I will look at you date class implementation and the test, focusing on correctness. I will run your date class against my test.
 
 \subsection{Basic correctness (5 marks)}
@@ -89,7 +89,7 @@ If your code compiles I will run your \textit{DemoRisk} with the given trade por
 \subsection{Performance (4 marks)}
 I create a very large test portfolio (millions of trades). As simple way to do this is to simply copy the given test set portfolio many times in a bigger file. If your DemoRisk runs in a time comparable or better than my own implementation, you get full marks. If section \ref{sec:correct} fails, here you get zero marks. Common mistakes that can make your program slow are: poor choice of data structures and redundant calculations (in particular, for market objects, do as much calculations as possible when you construct the objects, and reuse this information when pricers query the market data objects).
 
-\subsection{Advanced correctness (4 marks)}
+\subsection{Advanced correctness (3 marks)}
 I create an extended set of test test files, with more currencies and more special cases than what covered by the sample test files. This may include expired trades (i.e. trades where the last payment date is before the pricing date, which should generate an error), missing market data (e.g. a missing FX spot), missing fixings and other corner cases. If your DemoRisk runs correctly reproducing the output file provided you get full marks. I will compare your output with mine using WinMerge. If section \ref{sec:correct} fails, here you get zero marks.
 
 \subsection{GCC build (3 marks)}
@@ -97,10 +97,10 @@ Before submitting, verify that your program compiles and run also with the g++ c
 \begin{itemize}
     \item download setup-x86\_64.exe from https://www.cygwin.com/install.html
     \item Run the installer. When you install, select at least the packages "gcc-g++" and "make".
-    \item launch cygwin and type the command \textit{cygpath -w \$(pwd)}.
+    \item launch cygwin and type the command \textit{cygpath -w \$(pwd)}.  
     \item Copy your cpp and h files and the Makefile I provided to the directory revealed by the previous command
     \item Type "make"
-    \item If all is well, you should see all your files compiling without errors and an executable file created.
+    \item If all is well, you should see all your files compiling without errors and an executable file created. 
     \item Test the executable file from the command line.
 \end{itemize}
 
@@ -115,7 +115,7 @@ Before submitting, verify that your program compiles and run also with the g++ c
     \\ \indent  studentID2
     \\ \indent  ...
     \item Submit only a zip file, other formats are not allowed (e.g. arj, 7z)
-    \item Submit only only once.
+    \item Submit only only once per group.
     \item Only one member of the team must submit, not all members.
 \end{itemize}
   
@@ -146,7 +146,9 @@ Print out the random seed you used for the random number generator, so that, if 
 \subsection{Perfect streaming for type \textit{double}}
 Currently when a floating point number in double precision is saved to a file it is transformed from IEEE-754 format to a decimal representation with a finite number of decimals in scientific notation. The conversion from IEEE-754 to decimal (when saving) and then back to IEEE-754 (when reading) involves rounding and can cause accuracy loss. In other words, if we start from a value of type $double$, we save it as a $string$ in decimal format, then we read back the $string$ and convert it to $double$, we may not get back exactly the same value we started with.
 
-To overcome the problem, change the streaming representation of a \textit{double} to the integer interpretation of its binary representation in hexadecimal format with letters in lowercase.
+If we worked with binary files we would not have this problem, however here we are working text files, hence we need to represent our numbers using a set of characters which can be rendered with a text editor. 
+
+There are many ways to do this. For the purpose of this project we will solve the problem by changing the streaming representation of a \textit{double} to the integer interpretation of its binary representation in hexadecimal format with letters in lowercase.
 
 If $x$ is a variable of type $double$, it binary representation can be re-interpreted as a 64 bits integer, which can be represented exactly. To do that,
 you can either get the memory address to the variable of type $double$ and \textit{reinterpret\_cast} it to a 64-bit $int$ pointer or use a \textit{union}. To make the textual representation more compact, we use base 16 (hexadecimal). For example, the double number -0.15625 should be saved to file as the sequence of 16 characters bfc4000000000000 (see example in \textit{DemoHex.cpp}, which use a \textit{union}). When reading, you need to read the integer number saved in hexadecimal format and re-interpret it as a double.
@@ -290,8 +292,21 @@ You can redirect the output of your program to a file adding at the end of the c
     \item Redirect the console to a file, as explained above (this is because the console is very slow, and your time measurement would not be reflective of the real computation time)
     \item Run the command \textit{echo \%time\%} before and after calling your command. You might consider creating a batch file (.bat) and run it from the windows shell (\textit{cmd}).
 \end{enumerate}
-\subsection{How can I know if the performace of my program is reasonable?}
+\subsection{How can I know if the performance of my program is reasonable?}
 I will post my implementation as an executable for Win64. You can compare your implementation with mine. I will not post an equivalent binary file for MacOS.
-
+\subsection{What is the best way to divide the work among group members?}
+You are not supposed to divide the work among group members. I allow to work in groups so that strongest programmers can help weaker ones to improve, not so that you can split the work and work less. For each task repeat the following steps:
+\begin{enumerate}
+\item get together and discuss the task
+\item each group member carry out the task individually
+\item get together and discuss individual solutions
+\item choose the best solution and add to the code
+\item move to the next task (where everybody starts from a common source code)
+\end{enumerate}
+In this way, all Students carry out all tasks.
+\subsection{Do I need to submit my program output?}
+No, only your source code.
+\subsection{Do I need to provide intermediate source code, after each step?}
+No, just the final source code. Intermediate files are provided only to help you check after every step that your work is correct.
 \end{document}
 
